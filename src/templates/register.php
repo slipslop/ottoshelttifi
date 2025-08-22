@@ -1,0 +1,7 @@
+<?php ?>
+
+<main>
+    <div class="container">
+        <h1>Register</h1>
+    </div>
+</main>
