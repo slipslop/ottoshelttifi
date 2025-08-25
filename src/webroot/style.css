@@ -10,3 +10,16 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.form-container input {
+  display: block;
+}
+
+.form-container input[type="submit"] {
+  margin-top: 1em;
+}
+
+span.error {
+  display: block;
+  color: red;
+}

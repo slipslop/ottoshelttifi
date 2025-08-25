@@ -5,8 +5,10 @@ declare(strict_types=1);
 require_once('../includes/errors.php');
 require_once('../includes/template.php');
 require_once('../includes/request.php');
+require_once('../includes/validate.php');
+require_once('../includes/auth.php');
 
-function renderRegister(): void
+function renderRegister(array $user, array $errors): void
 {
     require_once('../templates/register.php');
 }
@@ -16,18 +18,30 @@ requestAllowMethods(['GET', 'POST']);
 $user = [
     'username' => null,
     'password' => null,
+    'password_confirm' => null,
 ];
 
+$errors = [];
+
 if (requestMethodIs('POST')) {
-    requestValidateCSRF();
+    validateCSRF();
     $user = requestGetPostParameters([
         'username' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'password' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'password_confirm' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
     ]);
+
+    $errors['username'] = validateUsername($user['username']);
+    $errors['password'] = validatePassword($user['password'], $user['password_confirm']);
+    $errors['password_confirm'] = validatePassword($user['password'], $user['password_confirm']);
+
+    if (!validateHasErrors($errors)) {
+        // no errors, continue
+    }
 } else {
-    requestGenerateCSRF();
+    authGenerateCSRF();
 }
 
 renderHeader();
-renderRegister();
+renderRegister($user, $errors);
 renderFooter();
