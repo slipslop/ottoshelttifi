@@ -19,10 +19,13 @@ $user = [
 ];
 
 if (requestMethodIs('POST')) {
+    requestValidateCSRF();
     $user = requestGetPostParameters([
         'username' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'password' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
     ]);
+} else {
+    requestGenerateCSRF();
 }
 
 renderHeader();
