@@ -46,14 +46,7 @@
                         id="password_confirm"
                         name="password_confirm"
                         required
-                        maxlength="64"
-                        aria-describedby="password_confirm-error">
-
-                    <?php if (isset($errors['password_confirm'])): ?>
-                        <span class="error" id="password_confirm-error" role="alert">
-                            <?= $errors['password_confirm']; ?>
-                        </span>
-                    <?php endif; ?>
+                        maxlength="64">
                 </div>
 
                 <button type="submit">Register</button>

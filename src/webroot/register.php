@@ -20,7 +20,6 @@ requestAllowMethods(['GET', 'POST']);
 $user = [
     'username' => null,
     'password' => null,
-    'password_confirm' => null,
 ];
 
 $errors = [];
@@ -38,7 +37,6 @@ if (requestMethodIs('POST')) {
         $errors['username'] = 'Username is taken';
     }
     $errors['password'] = validatePassword($user['password'], $user['password_confirm']);
-    $errors['password_confirm'] = validatePassword($user['password'], $user['password_confirm']);
 
     if (!validateHasErrors($errors)) {
         $password_hash = password_hash($user['password'], PASSWORD_DEFAULT);
