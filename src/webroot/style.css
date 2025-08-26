@@ -11,12 +11,27 @@ body {
   margin: 0 auto;
 }
 
-.form-container input {
-  display: block;
+.form-container {
+  display: flex;
+  place-content: center;
+  place-items: center;
 }
 
-.form-container input[type="submit"] {
+.form-container .form-group {
+  margin-bottom: .5em;
+}
+
+.form-container input {
+  display: block;
+  padding: .5em 0 .5em .5em;
+}
+
+.form-container button[type="submit"] {
   margin-top: 1em;
+  padding: 1em;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
 
 span.error {
