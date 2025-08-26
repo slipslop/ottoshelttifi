@@ -10,3 +10,13 @@ function databaseGetConnection(): PDO
 
     return new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 }
+
+function databaseIsUniqueUsername(string $username): bool
+{
+    $connection = databaseGetConnection();
+    $statement = $connection->prepare('SELECT id FROM users WHERE username = :username');
+    $statement->bindParam('username', $username, PDO::PARAM_STR);
+    $statement->execute();
+
+    return $statement->rowCount() === 0;
+}
