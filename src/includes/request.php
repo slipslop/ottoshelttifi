@@ -18,3 +18,8 @@ function requestGetPostParameters(array $input): array
 {
     return filter_input_array(INPUT_POST, $input, add_empty: true);
 }
+
+function requestRedirectTo(string $uri): void
+{
+    header("Location: /$uri");
+}
