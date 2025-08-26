@@ -47,11 +47,9 @@ if (requestMethodIs('POST')) {
         $statement = $connection->prepare("INSERT INTO users (username, password) values (:username, :password)");
         $statement->bindParam('username', $user['username'], PDO::PARAM_STR);
         $statement->bindParam('password', $password_hash, PDO::PARAM_STR);
-        if ($statement->execute()) {
-            header('Location: /register.php');
-        } else {
-            die('insert failed, todo');
-        }
+        $statement->execute();
+
+        requestRedirectTo('login.php');
     }
 } else {
     authGenerateCSRF();
