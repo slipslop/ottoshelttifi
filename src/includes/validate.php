@@ -14,11 +14,17 @@ function validateCSRF(): void
 
 function validateUsername(string $username): ?string
 {
+    $length = mb_strlen($username);
+
+    if ($length === 0) {
+        return "Username is required";
+    }
+
     if (!ctype_alnum($username)) {
         return "Username can only contain letters and digits";
     }
 
-    if (mb_strlen($username) < 3 || mb_strlen($username) > 32) {
+    if ($length < 3 || $length > 32) {
         return "Username length must be between 3 and 32";
     }
 
@@ -27,12 +33,18 @@ function validateUsername(string $username): ?string
 
 function validatePassword(string $password, string $confirmPassword): ?string
 {
+    $length = mb_strlen($password);
+
+    if ($length === 0) {
+        return "Password is required";
+    }
+
     if (!ctype_graph($password)) {
         return "Password contains invalid letters";
     }
 
-    if (mb_strlen($password) > 64) {
-        return "Given password is too long. Maximum length is 64";
+    if ($length < 8 || $length > 64) {
+        return "Password length must be between 8 and 64 characters";
     }
 
     if ($password !== $confirmPassword) {
