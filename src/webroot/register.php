@@ -9,6 +9,7 @@ require_once('../includes/request.php');
 require_once('../includes/validate.php');
 require_once('../includes/auth.php');
 require_once('../includes/escape.php');
+require_once('../includes/sanitize.php');
 
 function renderRegister(array $user, array $errors): void
 {
@@ -32,6 +33,8 @@ if (requestMethodIs('POST')) {
         'password_confirm' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
     ]);
 
+    $user['username'] = sanitizeUsername($user['username']);
+
     $errors['username'] = validateUsername($user['username']);
     if (!isset($errors['username']) && !databaseIsUniqueUsername($user['username'])) {
         $errors['username'] = 'Username is taken';
@@ -39,13 +42,7 @@ if (requestMethodIs('POST')) {
     $errors['password'] = validatePassword($user['password'], $user['password_confirm']);
 
     if (!validateHasErrors($errors)) {
-        $password_hash = password_hash($user['password'], PASSWORD_DEFAULT);
-
-        $connection = databaseGetConnection();
-        $statement = $connection->prepare("INSERT INTO users (username, password) values (:username, :password)");
-        $statement->bindParam('username', $user['username'], PDO::PARAM_STR);
-        $statement->bindParam('password', $password_hash, PDO::PARAM_STR);
-        if ($statement->execute()) {
+        if (databaseInsertNewUser($user['username'], password_hash($user['password'], PASSWORD_DEFAULT))) {
             requestRedirectTo('login.php');
         } else {
             requestTerminate(403);
