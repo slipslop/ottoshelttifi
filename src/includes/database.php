@@ -48,7 +48,7 @@ function databaseUpdateUserPasswordById(int $userId, string $password): bool
 {
     $connection = databaseGetConnection();
     $statement = $connection->prepare("UPDATE users SET password = :password WHERE id = :id LIMIT 1");
-    $statement->bindParam('id', $userId, PDO::PARAM_STR);
+    $statement->bindParam('id', $userId, PDO::PARAM_INT);
     $statement->bindParam('password', $password, PDO::PARAM_STR);
     return $statement->execute();
 }
