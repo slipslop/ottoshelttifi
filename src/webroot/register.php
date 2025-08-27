@@ -45,9 +45,11 @@ if (requestMethodIs('POST')) {
         $statement = $connection->prepare("INSERT INTO users (username, password) values (:username, :password)");
         $statement->bindParam('username', $user['username'], PDO::PARAM_STR);
         $statement->bindParam('password', $password_hash, PDO::PARAM_STR);
-        $statement->execute();
-
-        requestRedirectTo('login.php');
+        if ($statement->execute()) {
+            requestRedirectTo('login.php');
+        } else {
+            requestTerminate(403);
+        }
     }
 } else {
     authGenerateCSRF();
