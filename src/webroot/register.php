@@ -36,9 +36,12 @@ if (requestMethodIs('POST')) {
     $user['username'] = sanitizeUsername($user['username']);
 
     $errors['username'] = validateUsername($user['username']);
+    $errors['username'] = validateRequired($user['username'], 'Username');
     if (!isset($errors['username']) && !databaseIsUniqueUsername($user['username'])) {
         $errors['username'] = 'Username is taken';
     }
+    $errors['password'] = validateRequired($user['password'], 'Password');
+    $errors['password'] = validateRequired($user['password_confirm'], 'Password');
     $errors['password'] = validatePassword($user['password'], $user['password_confirm']);
 
     if (!validateHasErrors($errors)) {
