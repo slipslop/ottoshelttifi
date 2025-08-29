@@ -13,6 +13,17 @@ function requestMethodIs(string $method): bool
     return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === $method;
 }
 
+function requestGenerateCSRF(): void
+{
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['csrf_token'] = $token;
+}
+
+function requestGetCSRF(): string
+{
+    return $_SESSION['csrf_token'];
+}
+
 function requestTerminate(int $code): void
 {
     http_response_code($code);
