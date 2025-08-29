@@ -1,7 +1,7 @@
 <main>
     <div class="form-container">
         <form method="post">
-            <input type="hidden" name="csrf_token" value="<?=authGetCSRF()?>">
+            <input type="hidden" name="csrf_token" value="<?=requestGetCSRF()?>">
 
             <div class="form-group">
                 <label for="username">Username:</label>

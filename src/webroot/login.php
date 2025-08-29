@@ -57,7 +57,7 @@ if (requestMethodIs('POST')) {
 
     }
 } else {
-    authGenerateCSRF();
+    requestGenerateCSRF();
 }
 
 $user = escapeArrayOfValues($user);
