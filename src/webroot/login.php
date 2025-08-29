@@ -32,29 +32,29 @@ if (requestMethodIs('POST')) {
         'password' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
     ]);
     $user['username'] = sanitizeUsername($user['username']);
-
-    $plainTextPassword = $user['password'];
-    $hash = '';
-
-    $userRow = databaseGetUserByUsername($user['username']);
-    if ($userRow !== false) {
-        $hash = $userRow['password'];
-        if (!password_verify($plainTextPassword, $hash)) {
-            $errors['username'] = 'Wrong username or password';
-        }
-    } else {
-        $errors['username'] = 'Wrong username or password';
-    }
+    $errors['error'] = validateRequired($user['username'], 'Username');
+    $errors['error'] = validateRequired($user['password'], 'Password');
 
     if (!validateHasErrors($errors)) {
-        if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
-            databaseUpdateUserPasswordById($userRow['id'], password_hash($plainTextPassword, PASSWORD_DEFAULT));
+        $plainTextPassword = $user['password'];
+        $userRow = databaseGetUserByUsername($user['username']);
+        if ($userRow !== false) {
+            $hash = $userRow['password'];
+            if (!password_verify($plainTextPassword, $hash)) {
+                $errors['error'] = 'Wrong username or password';
+            }
+        } else {
+            $errors['error'] = 'Wrong username or password';
         }
 
-        $_SESSION['user_id'] = $userRow['id'];
-        var_dump($_SESSION);
-        die;
+        if (!validateHasErrors($errors)) {
+            if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
+                databaseUpdateUserPasswordById($userRow['id'], password_hash($plainTextPassword, PASSWORD_DEFAULT));
+            }
 
+            $_SESSION['user_id'] = $userRow['id'];
+            requestRedirectTo('users.php');
+        }
     }
 } else {
     requestGenerateCSRF();

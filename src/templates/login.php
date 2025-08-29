@@ -1,6 +1,12 @@
 <main>
     <div class="form-container">
+
         <form method="post">
+            <?php if (isset($errors['error'])): ?>
+                <span class="error" id="error" role="alert">
+                    <?= $errors['error']; ?>
+                </span>
+            <?php endif; ?>
             <input type="hidden" name="csrf_token" value="<?=requestGetCSRF()?>">
 
             <div class="form-group">
@@ -11,14 +17,7 @@
                     name="username"
                     required
                     maxlength="32"
-                    aria-describedby="username-error"
                     value="<?= $user['username'] ?? '' ?>">
-
-                <?php if (isset($errors['username'])): ?>
-                    <span class="error" id="username-error" role="alert">
-                        <?= $errors['username']; ?>
-                    </span>
-                <?php endif; ?>
             </div>
 
             <div class="form-group">
