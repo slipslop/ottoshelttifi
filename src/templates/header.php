@@ -1,4 +1,3 @@
-<?php ?>
 <!DOCTYPE html>
 <html lang="fi">
 
@@ -9,3 +8,4 @@
 </head>
 
 <body>
+<main>

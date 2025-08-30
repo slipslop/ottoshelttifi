@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 session_start();
 
-function authGenerateCSRF(): void
+function authRequireLoggedIn(): void
 {
-    $token = bin2hex(random_bytes(32));
-    $_SESSION['csrf_token'] = $token;
-}
+    $userId = (int) $_SESSION['user_id'] ?? 0;
 
-function authGetCSRF(): string
-{
-    return $_SESSION['csrf_token'];
+    if ($userId === 0) {
+        header('Location: /login.php');
+        exit;
+    }
 }

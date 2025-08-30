@@ -54,6 +54,18 @@ function validatePassword(string $password, string $confirmPassword): ?string
     return null;
 }
 
+function validateRequired(?string $input, string $fieldName): ?string
+{
+    if (
+        is_null($input) ||
+        $input === ''
+    ) {
+        return "$fieldName is required";
+    }
+
+    return null;
+}
+
 function validateHasErrors(array $errors): bool
 {
     foreach ($errors as $error) {
