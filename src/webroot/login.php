@@ -50,7 +50,7 @@ if (requestMethodIs('POST')) {
     }
 }
 
-$user = escapeArrayOfValues($user);
+$user = escapeArrayOfStrings($user);
 
 requestGenerateCSRF();
 renderHeader();
