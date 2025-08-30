@@ -40,7 +40,7 @@ if (requestMethodIs('POST')) {
         if (!$userRow || !password_verify($user['password'], $userRow['password'])) {
             $errors['error'] = 'Wrong username or password';
         } else {
-            if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
+            if (password_needs_rehash($userRow['password'], PASSWORD_DEFAULT)) {
                 databaseUpdateUserPasswordById($userRow['id'], password_hash($plainTextPassword, PASSWORD_DEFAULT));
             }
     
