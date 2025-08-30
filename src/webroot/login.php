@@ -36,32 +36,23 @@ if (requestMethodIs('POST')) {
     $errors['error'] = validateRequired($user['password'], 'Password');
 
     if (!validateHasErrors($errors)) {
-        $plainTextPassword = $user['password'];
         $userRow = databaseGetUserByUsername($user['username']);
-        if ($userRow !== false) {
-            $hash = $userRow['password'];
-            if (!password_verify($plainTextPassword, $hash)) {
-                $errors['error'] = 'Wrong username or password';
-            }
-        } else {
+        if (!$userRow || !password_verify($user['password'], $userRow['password'])) {
             $errors['error'] = 'Wrong username or password';
-        }
-
-        if (!validateHasErrors($errors)) {
+        } else {
             if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
                 databaseUpdateUserPasswordById($userRow['id'], password_hash($plainTextPassword, PASSWORD_DEFAULT));
             }
-
+    
             $_SESSION['user_id'] = $userRow['id'];
             requestRedirectTo('users.php');
         }
     }
-} else {
-    requestGenerateCSRF();
 }
 
 $user = escapeArrayOfValues($user);
 
+requestGenerateCSRF();
 renderHeader();
 renderLogin($user, $errors);
 renderFooter();
