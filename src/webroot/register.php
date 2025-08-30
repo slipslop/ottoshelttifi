@@ -51,12 +51,11 @@ if (requestMethodIs('POST')) {
             requestTerminate(403);
         }
     }
-} else {
-    requestGenerateCSRF();
 }
 
 $user = escapeArrayOfValues($user);
 
+requestGenerateCSRF();
 renderHeader();
 renderRegister($user, $errors);
 renderFooter();
